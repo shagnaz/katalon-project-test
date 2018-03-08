@@ -32,6 +32,7 @@ class ForumThreadsController < ApplicationController
         format.html { redirect_to @forum_thread, notice: 'Forum thread was successfully created.' }
         format.json { render :show, status: :created, location: @forum_thread }
       else
+        
         format.html { render :new }
         format.json { render json: @forum_thread.errors, status: :unprocessable_entity }
       end
