@@ -4,12 +4,13 @@ class ForumThreadsController < ApplicationController
   # GET /forum_threads
   # GET /forum_threads.json
   def index
-    @forum_threads = ForumThread.all
+    @forum_threads = ForumThread.all.order(id: :desc)
   end
 
   # GET /forum_threads/1
   # GET /forum_threads/1.json
   def show
+    @thread = ForumThread.find(params[:id])
   end
 
   # GET /forum_threads/new

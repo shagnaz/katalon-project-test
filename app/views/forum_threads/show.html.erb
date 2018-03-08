@@ -1,24 +1,36 @@
-<p id="notice"><%= notice %></p>
+<div class="row">
+	<div class="col-md-6 col-md-offset-3">
+		<div class="thread">
+		<h3> <%= @thread.title.titleize %></h3>
+		<div class="date">
+			<%= @thread.created_at %> oleh <%= @thread.user.name %>
+		</div>
+		<div class="content">
+			<%= @thread.content %>
+		</div>
+		<div style="clear: both;"></div>	
+		</div>
 
-<p>
-  <strong>Title:</strong>
-  <%= @forum_thread.title %>
-</p>
+		<% if @thread.forum_posts.any? %>
+			<% @thread.forum_posts.each do |post| %>
+				<div class="thread">
+					<div class="date">
+						<%= post.created_at %> oleh <%= post.user.name %>
+					</div>
+					<div class="content">
+						<%= post.content %>
+					</div>
+				</div>
+			<% end %>
+			<% else %>
+				<div>
+					jadilah yang pertama comment
+				</div>
+		<% end %>
+	</div>
+</div>
 
-<p>
-  <strong>Content:</strong>
-  <%= @forum_thread.content %>
-</p>
 
-<p>
-  <strong>Sticky order:</strong>
-  <%= @forum_thread.sticky_order %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @forum_thread.user_id %>
-</p>
 
 <%= link_to 'Edit', edit_forum_thread_path(@forum_thread) %> |
 <%= link_to 'Back', forum_threads_path %>
