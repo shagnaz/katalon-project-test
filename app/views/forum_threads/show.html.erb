@@ -1,5 +1,8 @@
 <div class="row">
 	<div class="col-md-6 col-md-offset-3">
+	<!-- menampilkan error comment -->
+
+
 		<div class="thread">
 		<h3> <%= @thread.title.titleize %></h3>
 		<div class="date">
@@ -8,11 +11,24 @@
 		<div class="content">
 			<%= @thread.content %>
 		</div>
+
+		<!-- link edit ditampilkan untuk thread yang sesuai user login, selain itu tidak -->
+		<!-- dengan menggunakan policy -->
+		<% if policy(@thread).edit? %>
+			<%= link_to 'edit', edit_forum_thread_path(@thread), class:'edit' %>
+			<!-- untuk link edit -->
+			 |<span>
+				<%= link_to 'delete', forum_thread_path(@thread), method: :delete, data: {confirm: 'are you sure want to delete?'} %>	
+			</span>
+			
+
+		<% end %>
 		<div style="clear: both;"></div>	
 		</div>
 
+<!-- untuk paginate post -->
 		<% if @thread.forum_posts.any? %>
-			<% @thread.forum_posts.each do |post| %>
+			<% @posts.each do |post| %>
 				<div class="thread">
 					<div class="date">
 						<%= post.created_at %> oleh <%= post.user.name %>
@@ -21,16 +37,37 @@
 						<%= post.content %>
 					</div>
 				</div>
+
 			<% end %>
 			<% else %>
 				<div>
 					jadilah yang pertama comment
 				</div>
 		<% end %>
+		<%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
+		<% if @post.errors.any? %>
+			<div class="alert alert-danger alert-dismissible">
+			 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<% @post.errors.full_messages.each do |error| %>
+					<span><%= error %></span><br>
+				<% end %>
+			</div>
+		<% end %>
+
+		<!-- nested resource -->
+	<% if user_signed_in? %>
+		<%= form_for [@thread, @post] do |f| %>
+			<div class='form-group'>
+				<%= f.label 'Comment' %>	
+				<%= f.text_area :content,rows: 5, class:'form-control' %>	
+			</div>
+			<div class="form-group">
+				<%= f.submit 'Submit',class: 'btn btn-primary form-control' %>
+			</div>
+			
+		<% end %>
+	<% end %>
 	</div>
 </div>
 
 
-
-<%= link_to 'Edit', edit_forum_thread_path(@forum_thread) %> |
-<%= link_to 'Back', forum_threads_path %>

@@ -8,43 +8,58 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Brand</a>
+      
+      <%= link_to 'MiniApp2', root_path, class:"navbar-brand" %>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
-          </ul>
-        </li>
-      </ul>
-      <form class="navbar-form navbar-left">
+      
+      <!-- <form class="navbar-form navbar-left">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search">
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
-      </form>
+      </form> -->
+
+      <!-- untuk search -->
+      <%= form_tag(root_path, :method => "get", id:"search-form", class:"navbar-form navbar-left") do %>
+
+          <div class="form-group">
+            <%= text_field_tag :search, params[:search], placeholder:"search", data:{autocomplete: forum_threads_autocomplete_forum_thread_title_path}, class:'form-control' %>
+
+            <%= submit_tag 'Search',class:"btn btn-default" %>
+          </div>
+
+        
+      <% end %>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Link</a></li>
+        
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+          <!-- memunculkan nama user yang login dengan current_user -->
+
+          <%= user_signed_in? ? current_user.name : 'Halo guest' %>
+          <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
+            <!-- <li><a href="#">Daftar</a></li> -->
+
+            <!-- menambahkan apakah user sudah login, dgn method dari devise user_signed_in?  -->
+
+            <% if user_signed_in? %>
+              <!-- jika user sudah sign_in maka muncul tombol logout -->
+                <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
+
+                <% else %>
+                  <li><%= link_to 'Daftar', new_user_registration_path %></li>
+                  <li><%= link_to 'Login', new_user_session_path %></li>
+            <% end %>
+            
+            <!-- <li><a href="#">Login</a></li> -->
+            
+            <!-- <li><a href="#">Logout</a></li> -->
+            
+            
           </ul>
         </li>
       </ul>

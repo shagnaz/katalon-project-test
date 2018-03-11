@@ -1,9 +1,15 @@
 Rails.application.routes.draw do
 
-  resources :forum_posts
-  resources :forum_threads
+  
+  
   devise_for :users
   root to: "forum_threads#index"
+    get 'forum_threads/autocomplete_forum_thread_title'
+      resources :forum_threads do
+          put :pinit, on: :member
+          resources :forum_posts
+      end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -1,4 +1,5 @@
-<%= form_for(@forum_thread) do |f| %>
+
+    <%= form_for(@forum_thread) do |f| %>
   <% if @forum_thread.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@forum_thread.errors.count, "error") %> prohibited this forum_thread from being saved:</h2>
@@ -11,23 +12,18 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :title %><br>
-    <%= f.text_field :title %>
+    <%= f.text_field :title, class:'form-control' %>
   </div>
-  <div class="field">
+  <div class="form-group">
     <%= f.label :content %><br>
-    <%= f.text_area :content %>
+    <%= f.text_area :content, class:'form-control', rows:10 %>
   </div>
-  <div class="field">
-    <%= f.label :sticky_order %><br>
-    <%= f.number_field :sticky_order %>
+
+  <div class="form-group">
+    <%= f.submit 'submit', class:'form-control btn btn-primary' %>
   </div>
-  <div class="field">
-    <%= f.label :user_id %><br>
-    <%= f.number_field :user_id %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+<% end %>    
+
+

@@ -1,6 +1,6 @@
 class ForumPostsController < ApplicationController
   before_action :set_forum_post, only: [:show, :edit, :update, :destroy]
-
+  before_action :authenticate_user!, only: [:create]
   # GET /forum_posts
   # GET /forum_posts.json
   def index
@@ -14,6 +14,7 @@ class ForumPostsController < ApplicationController
 
   # GET /forum_posts/new
   def new
+
     @forum_post = ForumPost.new
   end
 
@@ -24,17 +25,32 @@ class ForumPostsController < ApplicationController
   # POST /forum_posts
   # POST /forum_posts.json
   def create
-    @forum_post = ForumPost.new(forum_post_params)
+    @thread = ForumThread.friendly.find(params[:forum_thread_id])
+    @post = ForumPost.new(forum_post_params)
+ 
+    @post.forum_thread = @thread
+    # menggunakan current user
+    @post.user = current_user
 
-    respond_to do |format|
-      if @forum_post.save
-        format.html { redirect_to @forum_post, notice: 'Forum post was successfully created.' }
-        format.json { render :show, status: :created, location: @forum_post }
-      else
-        format.html { render :new }
-        format.json { render json: @forum_post.errors, status: :unprocessable_entity }
-      end
+    if @post.save
+      redirect_to forum_thread_path(@thread)
+    else
+      render 'forum_threads/show'
     end
+
+    
+
+    
+
+    # respond_to do |format|
+    #   if @forum_post.save
+    #     format.html { redirect_to @forum_post, notice: 'Forum post was successfully created.' }
+    #     format.json { render :show, status: :created, location: @forum_post }
+    #   else
+    #     format.html { render :new }
+    #     format.json { render json: @forum_post.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # PATCH/PUT /forum_posts/1

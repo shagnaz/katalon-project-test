@@ -1,30 +1,49 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <p id="notice"><%= notice %></p>
+    <p id="notice" >
+    <%= notice %>
+      
+    </p>
 
-      <h1>Listing Forum Threads</h1>
+      <% if user_signed_in? %>
 
       <%= link_to 'New Forum thread', new_forum_thread_path, class:'btn btn-primary' %>
-
+      <% end %>
       <!-- looping -->
       <% @forum_threads.each do |thread| %>
         <div class="thread">
-          <h3><%= link_to thread.title.titleize, forum_thread_path(thread) %></h3>
+          <h3><%= link_to thread.title.titleize, forum_thread_path(thread) %> 
+          <!-- sticky order jika != 100, function nya ada di model forumthread -->
+          <% if thread.sticky %>
+            <span class="glyphicon glyphicon-pushpin"></span>
+          <% end %>
+          </h3>
           <div class="date">
             <%= thread.created_at %> oleh <%= thread.user.name %>
           </div>
           <div class="content">
-            <%= thread.content %>
+            <%= truncate thread.content, length: 200 %>
           </div> 
           <div class="comment">
             <%= thread.forum_posts.count %> comment
           </div> 
+
+          <div class="action">
+            
+            <%= link_to 'pin it', pinit_forum_thread_path(thread), method: :put %>
+          </div>
         <div style="clear: both;"></div>
         </div>
       <% end %>
 
+      <%= will_paginate @forum_threads,renderer: BootstrapPagination::Rails %>
+
   </div>
   
 </div>
+
+
+
+
 
 
