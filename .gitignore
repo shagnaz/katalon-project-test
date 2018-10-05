@@ -11,3 +11,8 @@
 /log/*
 !/log/.keep
 /tmp
+/bin/
+/Libs/
+/.settings/
+/.classpath
+.svn/
