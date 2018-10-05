@@ -19,7 +19,7 @@
           <% end %>
           </h3>
           <div class="date">
-            <%= thread.created_at %> oleh <%= thread.user.name %>
+            <%= thread.created_at rescue '' %> oleh <%= thread.user.name rescue '' %>
           </div>
           <div class="content">
             <%= truncate thread.content, length: 200 %>
